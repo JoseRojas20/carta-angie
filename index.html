@@ -15,7 +15,7 @@ section{min-height:100svh;display:flex;align-items:center;justify-content:center
 .kicker{letter-spacing:.25em;text-transform:uppercase;font-size:.68rem;color:var(--muted);margin-bottom:20px}
 h1{font-family:"Parisienne",cursive;font-size:clamp(4rem,17vw,8rem);font-weight:400;margin:0;color:#8f5c64}
 .hero p{font-family:"Cormorant Garamond",serif;font-size:1.45rem;margin:14px auto 34px;max-width:520px}
-.btn{display:inline-block;padding:14px 25px;border:1px solid #cda6ab;border-radius:999px;color:#704b51;text-decoration:none;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;background:#fff9}
+.btn{display:inline-block;padding:14px 25px;border:1px solid #cda6ab;border-radius:999px;color:#704b51;text-decoration:none;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;background:#fff9}.music-btn{display:inline-flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer;font-family:Montserrat,sans-serif}.music-btn.playing{background:#f5e8e4}.music-note{font-size:1rem}
 .hero-photo{width:min(370px,82vw);aspect-ratio:4/5;object-fit:cover;border-radius:190px 190px 18px 18px;box-shadow:0 25px 70px #7e5c5c25;margin-bottom:34px}
 .story{background:#fff}.story-inner{max-width:900px;width:100%;text-align:center}
 .eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rose)}
@@ -40,6 +40,10 @@ h2{font-family:"Cormorant Garamond",serif;font-size:clamp(2.7rem,8vw,5rem);font-
     <h1>Para Angie</h1>
     <p>Si alguna vez olvidas cuánto te amo, vuelve aquí.</p>
     <a class="btn" href="#historia">Abrir mi carta</a>
+    <button class="btn music-btn" id="musicToggle" type="button" aria-label="Reproducir nuestra canción"><span class="music-note">♫</span><span id="musicLabel">Reproducir nuestra canción</span></button>
+    <audio id="bgMusic" preload="metadata" loop>
+      <source src="assets/nuestra-cancion.mp3" type="audio/mpeg">
+    </audio>
   </div>
 </section>
 
@@ -128,5 +132,33 @@ h2{font-family:"Cormorant Garamond",serif;font-size:clamp(2.7rem,8vw,5rem);font-
   </div>
 </section>
 
+
+<script>
+(function(){
+  const audio=document.getElementById('bgMusic');
+  const btn=document.getElementById('musicToggle');
+  const label=document.getElementById('musicLabel');
+  if(!audio||!btn)return;
+  btn.addEventListener('click', async function(){
+    try{
+      if(audio.paused){
+        await audio.play();
+        label.textContent='Pausar nuestra canción';
+        btn.classList.add('playing');
+      }else{
+        audio.pause();
+        label.textContent='Reproducir nuestra canción';
+        btn.classList.remove('playing');
+      }
+    }catch(e){
+      label.textContent='Toca para reproducir';
+    }
+  });
+  audio.addEventListener('ended',function(){
+    label.textContent='Reproducir nuestra canción';
+    btn.classList.remove('playing');
+  });
+})();
+</script>
 </body>
 </html>
